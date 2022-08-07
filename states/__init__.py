@@ -1,1 +1,1 @@
-from .sum_of_digits import Summ
+from .states_machine import GetInfoAboutUser

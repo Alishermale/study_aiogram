@@ -13,36 +13,40 @@ async def admin(message: types.Message):
     await bot.send_message(message.chat.id, 'Hi! That message only for admins.')
 
 
-@dp.message_handler(Command('sum'))
+@dp.message_handler(Command('form'))
 async def start_sum(message: types.Message):
-    await message.answer("You're open calculator\n"
-                         "Tell me first number")
-    await Summ.first()
+    await message.answer("Tell me your name")
+    await GetInfoAboutUser.first()
 
 
-@dp.message_handler(state=Summ.dig1)
+@dp.message_handler(state=GetInfoAboutUser.name)
 async def first_dig(message: types.Message, state: FSMContext):
-    try:
-        answer = int(message.text)
-    except ValueError:
-        await message.answer('Try to use digits')
-        first_dig()
+    answer = message.text
+    await message.answer('Great. Now tell me your email')
     await state.update_data(answer1=answer)
-    await message.answer('Now second digit')
-    await Summ.next()
+    await GetInfoAboutUser.next()
 
 
-@dp.message_handler(state=Summ.dig2)
+@dp.message_handler(state=GetInfoAboutUser.email)
+async def second_dig(message: types.Message, state: FSMContext):
+    answer = message.text
+    await state.update_data(answer2=answer)
+    await message.answer("Awesome! Last thing is you "
+                         "phone number")
+    await GetInfoAboutUser.next()
+
+
+@dp.message_handler(state=GetInfoAboutUser.phone_number)
 async def second_dig(message: types.Message, state: FSMContext):
     data = await state.get_data()
     answer1 = data.get('answer1')
-    try:
-        answer2 = int(message.text)
-    except ValueError:
-        await message.answer('Try to use digits')
-        second_dig()
-    await message.answer(f'{answer1} + {answer2} = {answer1 + answer2}')
+    answer2 = data.get('answer2')
+    answer = message.text
+    await state.update_data(answer3=answer)
+    await message.answer("Success! Your answers is"
+                         f"\n{answer1}\n{answer2}\n{answer}")
     await state.finish()
+
 
 
 # echo
