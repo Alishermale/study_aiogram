@@ -6,3 +6,6 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Command
 from states import GetInfoAboutUser
+from keyboard.default import custom
+from aiogram.dispatcher.filters import Text
+from aiogram.types import ReplyKeyboardRemove
