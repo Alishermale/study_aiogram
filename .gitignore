@@ -1,3 +1,4 @@
 TOKEN.txt
 .idea/
 .env
+__pycache__/
