@@ -1,15 +1,8 @@
-from bot import *
-
-load_dotenv()
-bot = Bot(os.getenv('BOT_TOKEN'))
-dp = Dispatcher(bot, storage=MemoryStorage())
-admin_id = os.getenv('ADMIN_ID')
-
-
-# admin
-@dp.message_handler(commands='admin', user_id=admin_id)
-async def admin(message: types.Message):
-    await bot.send_message(message.chat.id, 'Hi! That message only for admins.')
+from aiogram import types
+from aiogram.dispatcher import FSMContext
+from aiogram.dispatcher.filters import Command
+from loader import dp
+from states import GetInfoAboutUser
 
 
 @dp.message_handler(Command('form'))
@@ -45,32 +38,3 @@ async def get_phone_number(message: types.Message, state: FSMContext):
     await message.answer("Success! Your answers is"
                          f"\n{answer1}\n{answer2}\n{answer}")
     await state.finish()
-
-
-# bot's customization
-@dp.message_handler(Command("custom"))
-async def start_customization(message: types.Message):
-    await message.answer('Tap on the button'
-                         "if you're agree that:", reply_markup=custom)
-
-
-@dp.message_handler(Text(startswith="I'm"))
-async def vegetarian_or_vegan(message: types.Message):
-    await message.answer(f"Okey, you're{message.text[3:]}"
-                         f"\nSomething else?")
-
-
-@dp.message_handler(Text(startswith="I don't"))
-async def i_will_die_if_i_eat(message: types.Message):
-    await message.answer("Which kind of food"
-                         " you can't eat?", reply_markup=ReplyKeyboardRemove())
-
-
-# echo
-@dp.message_handler()
-async def echo(message: types.Message):
-    text = str(message['text'])
-    await message.answer(text)
-
-
-executor.start_polling(dp)
