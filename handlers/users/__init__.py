@@ -4,6 +4,7 @@ from .say_hi_for_admins import dp
 from .purchase import dp
 from .get_media import dp
 from .create_order import dp
+from .marketplace import dp
 
 from .echo import dp
 
