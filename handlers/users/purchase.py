@@ -21,12 +21,12 @@ async def buying_apple(call: CallbackQuery):
 
 
 @dp.callback_query_handler(buy_callback.filter(item_name="Orange"))
-async def buying_orange(call: CallbackQuery, orange_keyboard=None):
+async def buying_orange(call: CallbackQuery):
     await call.answer(cache_time=60)
     await call.message.answer("You're bought an orange",
                               reply_markup=oranges_keyboard)
 
 
 @dp.callback_query_handler(Text(equals='Cancel'))
-async def buying_orange(call: CallbackQuery, orange_keyboard=None):
+async def buying_orange(call: CallbackQuery):
     await call.message.answer("Goodbye!")
